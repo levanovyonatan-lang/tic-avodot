@@ -159,9 +159,9 @@
                     </div>
                 </div>
                 <div>
-                    <a href="tel:+972542633610" class="group relative inline-flex items-center justify-center bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all overflow-hidden hover:scale-105 shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]">
+                    <a href="tel:+972542633610" class="group relative inline-flex items-center justify-center bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all overflow-hidden hover:scale-105 shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]">
                         <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
-                        <i class="fas fa-phone ml-2"></i> <span dir="ltr" class="font-sans tracking-widest text-[15px]">054-2633610</span>
+                        <i class="fas fa-phone ml-1.5 sm:ml-2"></i> <span dir="ltr" class="font-sans tracking-widest text-[12px] sm:text-[15px]">054-2633610</span>
                     </a>
                 </div>
             </div>
@@ -456,13 +456,15 @@
                     
                     <div class="w-full relative z-10 mb-8">
                         <div class="absolute -inset-[2px] bg-gradient-to-r from-gray-600 to-gray-400 rounded-[22px] blur opacity-20 group-hover:opacity-40 transition duration-700"></div>
-                        <div class="relative bg-[#0b1121] rounded-[20px] overflow-hidden h-[450px] md:h-[550px] shadow-2xl border border-white/10">
+                        <div class="relative bg-[#0b1121] rounded-[20px] overflow-hidden h-[450px] md:h-[550px] shadow-2xl border border-white/10 flex flex-col">
                             <!-- Header for gallery -->
-                            <div class="bg-[#1e293b] px-4 py-3 flex justify-between items-center border-b border-white/5">
+                            <div class="bg-[#1e293b] px-4 py-3 flex justify-between items-center border-b border-white/5 flex-shrink-0">
                                 <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">Drive Preview</span>
                                 <i class="fas fa-images text-gray-500"></i>
                             </div>
-                            <iframe src="https://drive.google.com/embeddedfolderview?id=1dLEb7RhKpmb-RLYTUOSCvC9qqBPVoAzM#grid" class="absolute inset-0 w-full h-full border-0 mt-10" allowfullscreen></iframe>
+                            <div class="relative flex-grow w-full" style="-webkit-overflow-scrolling: touch;">
+                                <iframe src="https://drive.google.com/embeddedfolderview?id=1dLEb7RhKpmb-RLYTUOSCvC9qqBPVoAzM#grid" class="absolute inset-0 w-full h-full border-0" allowfullscreen></iframe>
+                            </div>
                         </div>
                     </div>
 
@@ -515,10 +517,15 @@
             <h2 class="text-4xl md:text-5xl font-black mb-8 leading-tight">מחויב לתפקיד ומחכה להזדמנות להוכיח את עצמי.</h2>
             <p class="text-gray-400 text-xl md:text-2xl mb-14 max-w-2xl mx-auto font-light">אשמח להגיע למיונים, להציג את היכולות שלי ולתרום את חלקי במערך דובר צה"ל.</p>
             
-            <a href="tel:+972542633610" class="group relative inline-flex items-center justify-center bg-white text-black text-2xl md:text-3xl px-12 py-6 rounded-full font-black transition-all hover:scale-105 hover:bg-gray-100 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+            <a href="tel:+972542633610" class="group relative flex flex-col sm:flex-row items-center justify-center bg-white text-black text-xl sm:text-2xl md:text-3xl px-6 sm:px-12 py-4 sm:py-6 rounded-3xl sm:rounded-full font-black transition-all hover:scale-105 hover:bg-gray-100 shadow-[0_0_40px_rgba(255,255,255,0.3)] w-full max-w-[280px] sm:max-w-none mx-auto sm:w-auto sm:inline-flex">
                 <!-- Pulse animation behind button -->
-                <span class="absolute -inset-1 rounded-full bg-white opacity-20 group-hover:animate-ping"></span>
-                <i class="fas fa-phone-alt ml-4 text-blue-600 group-hover:rotate-12 transition-transform"></i> צרו קשר <span class="mx-3 text-gray-300 font-light">|</span> <span dir="ltr" class="text-blue-600 font-sans tracking-wider">054-2633610</span>
+                <span class="absolute -inset-1 rounded-3xl sm:rounded-full bg-white opacity-20 group-hover:animate-ping"></span>
+                <div class="flex items-center">
+                    <i class="fas fa-phone-alt ml-3 sm:ml-4 text-blue-600 group-hover:rotate-12 transition-transform"></i> 
+                    <span>צרו קשר</span>
+                </div>
+                <span class="hidden sm:inline mx-3 text-gray-300 font-light">|</span> 
+                <span dir="ltr" class="text-blue-600 font-sans tracking-wider mt-1 sm:mt-0">054-2633610</span>
             </a>
             
             <div class="mt-20 flex justify-center gap-8 text-3xl text-gray-600">
@@ -549,12 +556,9 @@
             iframe.style.top = '0';
             iframe.style.left = '0';
             
-            // טריק מתקדם: הנגן של גוגל דרייב "נשבר" ברוחב קטן. 
-            // הפתרון: אנחנו נטען אותו בגודל כפול 2.5 כדי שהכפתורים שלו יסתדרו יפה, ואז נכווץ אותו חזרה (Scale).
-            iframe.style.width = '250%';
-            iframe.style.height = '250%';
-            iframe.style.transform = 'scale(0.4)';
-            iframe.style.transformOrigin = 'top left';
+            // תוקן: חזרנו ל-100% טבעי כדי שפס השליטה בטלפון לא יקפוץ לאמצע
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
             
             iframe.style.zIndex = '10';
             iframe.style.border = 'none';
