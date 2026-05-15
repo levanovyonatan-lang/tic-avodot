@@ -539,40 +539,67 @@
         </div>
     </footer>
 
+    <!-- Video Modal Popup (פופ-אפ סינמטי לצפייה) -->
+    <div id="videoModal" class="fixed inset-0 z-[100] bg-black/95 hidden flex-col items-center justify-center backdrop-blur-lg opacity-0 transition-opacity duration-300" onclick="if(event.target === this) closeModal()">
+        <button onclick="closeModal()" class="absolute top-4 right-4 md:top-8 md:right-8 text-white hover:text-gray-300 focus:outline-none z-50 bg-white/10 w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur transition hover:bg-white/20 hover:scale-110 shadow-lg">
+            <i class="fas fa-times text-xl md:text-2xl"></i>
+        </button>
+        <div class="relative w-full max-w-[85vw] sm:max-w-sm md:max-w-md aspect-[9/16] bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/10 transform scale-95 transition-transform duration-300" id="modalContent">
+            <!-- לוכד טעינה שיוצג בזמן שהוידאו נטען -->
+            <div class="absolute inset-0 flex items-center justify-center bg-[#0b1121] z-0">
+                <div class="w-10 h-10 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
+            </div>
+            <iframe id="modalIframe" src="" class="absolute inset-0 w-full h-full border-0 z-10" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
-        // פונקציה לטעינת הנגן
+        // פונקציה לפתיחת הנגן בפופ-אפ (Modal)
         function playVideo(placeholder) {
             const container = placeholder.parentElement;
             const videoId = container.getAttribute('data-video-id');
             
-            const iframe = document.createElement('iframe');
+            const modal = document.getElementById('videoModal');
+            const modalIframe = document.getElementById('modalIframe');
+            const modalContent = document.getElementById('modalContent');
             
-            iframe.src = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1`;
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-            iframe.setAttribute('allowfullscreen', 'true');
+            // טעינת הסרטון לתוך הפופ-אפ
+            modalIframe.src = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1`;
             
-            iframe.style.position = 'absolute';
-            iframe.style.top = '0';
-            iframe.style.left = '0';
+            // הצגת המודאל
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             
-            // תוקן: חזרנו ל-100% טבעי כדי שפס השליטה בטלפון לא יקפוץ לאמצע
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
+            // אפקט כניסה חלקה (Fade & Scale in)
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
             
-            iframe.style.zIndex = '10';
-            iframe.style.border = 'none';
-            iframe.style.backgroundColor = '#0b1121';
+            // עצירת גלילה של האתר מאחורה בזמן הצפייה
+            document.body.style.overflow = 'hidden';
+        }
+
+        // פונקציה לסגירת המודאל
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const modalIframe = document.getElementById('modalIframe');
+            const modalContent = document.getElementById('modalContent');
             
-            // Fade in effect
-            iframe.style.opacity = '0';
-            iframe.style.transition = 'opacity 0.6s ease';
-            iframe.onload = () => {
-                iframe.style.opacity = '1';
-            };
+            // אפקט יציאה (Fade & Scale out)
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
             
-            placeholder.remove();
-            container.appendChild(iframe);
+            // איפוס הוידאו והחזרת המצב לקדמותו
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                modalIframe.src = ''; // עצירת ניגון הוידאו
+                document.body.style.overflow = ''; // החזרת הגלילה לאתר
+            }, 300);
         }
 
         document.addEventListener("DOMContentLoaded", () => {
