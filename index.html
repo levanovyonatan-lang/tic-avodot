@@ -125,20 +125,31 @@
             z-index: 10;
         }
 
-        /* אנימציות חשיפה בגלילה (Scroll Reveal) */
+        /* תיקון ספארי - אנימציות חשיפה בגלילה (Scroll Reveal) */
         .reveal {
             opacity: 0;
+            -webkit-transform: translateY(40px);
             transform: translateY(40px);
+            -webkit-transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
             transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
         }
         .reveal.active {
             opacity: 1;
+            -webkit-transform: translateY(0);
             transform: translateY(0);
         }
         
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
+        .delay-100 { transition-delay: 100ms; -webkit-transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; -webkit-transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; -webkit-transition-delay: 300ms; }
+
+        /* תיקון ספארי - מניעת גלישה של אלמנטים מעוגלים */
+        .overflow-hidden {
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
+        }
     </style>
 </head>
 <body class="antialiased font-sans selection:bg-blue-500 selection:text-white">
@@ -634,6 +645,7 @@
                 });
             };
 
+            // מנגנון חשיפה עם תאימות גבוהה לספארי
             const statsObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && !countersAnimated) {
@@ -641,7 +653,7 @@
                         countersAnimated = true;
                     }
                 });
-            }, { threshold: 0.15 }); 
+            }, { threshold: 0.1 }); 
 
             const statsSection = document.getElementById('stats');
             if (statsSection) {
@@ -658,13 +670,27 @@
                     }
                 });
             }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
+                threshold: 0.05,
+                rootMargin: "0px 0px -20px 0px"
             });
 
             revealElements.forEach(element => {
                 revealObserver.observe(element);
             });
+
+            // גיבוי לספארי: אם ספארי חוסם את משקיף הגלילה, נחשוף הכל בכוח אחרי 1.5 שניות
+            // כדי שהאתר לעולם לא ייתקע עם דף ריק
+            setTimeout(() => {
+                revealElements.forEach(element => {
+                    if(!element.classList.contains('active')) {
+                        element.classList.add('active');
+                    }
+                });
+                if(!countersAnimated) {
+                    animateCounters();
+                    countersAnimated = true;
+                }
+            }, 1500);
             
             // אפקט לתפריט הניווט בגלילה
             const navbar = document.querySelector('nav');
